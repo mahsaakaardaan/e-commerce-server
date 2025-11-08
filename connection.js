@@ -1,31 +1,40 @@
 require('dotenv').config();
 const mysql = require('mysql');
 
-const db = mysql.createConnection({
-  // host: process.env.HOST,
-  // user: 'moonio_mahsaa',
-  // password: '123456789',
-  // database: process.env.DATA_BASE,
-  // port: process.env.DB_PORT_2,
-  // multipleStatements: true
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: process.env.PORT,
-  multipleStatements: true
+// ایجاد connection اصلی
+let db;
 
-  // host: '46.34.163.193',
-  // user: 'mahsa_node',
-  // password: 'StrongPass123',
-  // database:'ecommerce',
-  // // port: process.env.DB_PORT_2,
-  // multipleStatements: true
-});
+function handleDisconnect() {
+  db = mysql.createConnection({
+    host: process.env.DB_HOST,       // مثلا 127.0.0.1
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    multipleStatements: true
+  });
 
-db.connect((err) => { 
-  if (err) console.log('connection error', err); 
-  console.log('db connected', db.state);
-});
+  db.connect(err => {
+    if (err) {
+      console.error('DB connection error:', err);
+      // تلاش مجدد بعد از 2 ثانیه
+      setTimeout(handleDisconnect, 2000);
+    } else {
+      console.log('✅ DB connected');
+    }
+  });
 
-module.exports = db; 
+  db.on('error', err => {
+    console.error('DB error', err);
+    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+      console.log('🔄 Reconnecting...');
+      handleDisconnect(); // اتصال دوباره بساز
+    } else {
+      throw err;
+    }
+  });
+}
+
+// ایجاد اولین اتصال
+handleDisconnect();
+
+module.exports = db;
