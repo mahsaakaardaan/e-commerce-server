@@ -28,7 +28,7 @@ const login = async (req, res) => {
             secure: false,
             sameSite: 'lax',
             path: '/',
-            domain: process.env.COOKIE_DOMAIN || undefined
+            // domain: process.env.COOKIE_DOMAIN || undefined
           })
           .status(200)
           .json({
@@ -54,7 +54,7 @@ const login = async (req, res) => {
           secure: false,
           sameSite: 'lax',
           path: '/',
-          domain: process.env.COOKIE_DOMAIN || undefined,
+          // domain: process.env.COOKIE_DOMAIN || undefined,
         })
         .status(200)
         .json({ data: data[0] });
