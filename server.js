@@ -7,7 +7,8 @@ dotenv.config();
 const app = express();
 const allowedOrigins = [
   "http://localhost:3000",
-  "http://localhost:5173"
+  "http://localhost:5173",
+  'http://46.34.163.193:4500'
 ];
 app.use(cors({
   origin: function (origin, callback) {
@@ -27,7 +28,8 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   const allowedOrigins = [
     "http://localhost:3000",
-    "http://localhost:5173"
+    "http://localhost:5173",
+    'http://46.34.163.193:4500'
   ];
 
   const origin = req.headers.origin;
