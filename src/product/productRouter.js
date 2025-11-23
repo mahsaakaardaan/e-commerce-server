@@ -6,8 +6,10 @@ const {
   updateProduct,
   deleteProduct,
   getProductById,
-  uploadProductThumbnail
+  uploadProductThumbnail,
+  getIncredibleProducts
 } = require('./controller');
+const { auth } = require('../middleware/auth');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 
@@ -18,6 +20,7 @@ router.get('/single/:id', getProductById);
 router.post('/add', upload.single('file'), uploadProductThumbnail);
 router.get('/search', searchFilterProduct);
 router.put('/update/:id', updateProduct);
-router.delete('/delete/:id', deleteProduct);
+router.delete('/delete/:id', auth, deleteProduct);
+router.get('/incredible', getIncredibleProducts);
 
 module.exports = router;

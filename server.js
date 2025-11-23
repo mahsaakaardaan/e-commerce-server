@@ -6,20 +6,23 @@ dotenv.config();
 
 const app = express();
 const allowedOrigins = [
-  "http://localhost:3000",
-  "http://localhost:5173",
-  'http://46.34.163.193:4500'
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'http://46.34.163.193:4500',
+  'http://localhost:4500'
 ];
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true, // allow cookies / auth headers
-}));
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true // allow cookies / auth headers
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use((req, res, next) => {
@@ -27,14 +30,15 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Headers', '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   const allowedOrigins = [
-    "http://localhost:3000",
-    "http://localhost:5173",
-    'http://46.34.163.193:4500'
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'http://46.34.163.193:4500',
+    'http://localhost:4500/'
   ];
 
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
-    res.header("Access-Control-Allow-Origin", origin);
+    res.header('Access-Control-Allow-Origin', origin);
   }
   next();
 });
@@ -58,4 +62,10 @@ app.use(
 
 app.use('/comment', require('./src/comments/commentsRouter.js'));
 
-app.listen(3335, () => console.log('app is running')); 
+app.use('/story', require('./src/story/storyRouter.js'));
+
+app.use('/blog', require('./src/blog/blogRouter.js'));
+
+app.use('/banner', require('./src/banner/BannerRouter.js'));
+
+app.listen(3335, () => console.log('app is running'));

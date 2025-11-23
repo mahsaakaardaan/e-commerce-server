@@ -40,6 +40,44 @@ const getAllProducts = (req, res) => {
   });
 };
 
+const getIncredibleProducts = (req, res) => {
+  const q =
+    'SELECT p.*,c.id AS categoryId,c.fa_name,c.en_name,s.id AS subCategoryId,s.fa_s_name,en_s_name,cv.id AS variantId,cv.color,cv.hex,cv.count,cv.price FROM product AS p LEFT JOIN `category` AS c ON (p.product_category_id = c.id) LEFT JOIN `sub-category` AS s ON (p.product_sub_id = s.id) LEFT JOIN `color-variant` AS cv ON (p.id = cv.product_id) WHERE p.off > 3 ORDER BY off DESC';
+  db.query(q, (err, data) => {
+    if (err)
+      res
+        .status(500)
+        .json({ message: 'gatAllProducts error ' + err });
+    const product = {};
+    data.forEach((row) => {
+      if (!product[row.id]) {
+        product[row.id] = {
+          id: row.id,
+          thumbnail: row.thumbnail,
+          title: row.title,
+          description: row.description,
+          categoryId: row.categoryId,
+          fa_name: row.fa_name,
+          en_name: row.en_name,
+          subCategoryId: row.subCategoryId,
+          fa_s_name: row.fa_s_name,
+          en_s_name: row.en_s_name,
+          off: row.off,
+          variants: []
+        };
+      }
+      product[row.id].variants.push({
+        id: row.varianId,
+        color: row.color,
+        hex: row.hex,
+        count: row.count,
+        price: row.price
+      });
+    });
+    return res.status(200).json({ data: Object.values(product) });
+  });
+};
+
 const getProductById = (req, res) => {
   const { id } = req.params;
   const q =
@@ -354,5 +392,6 @@ module.exports = {
   searchFilterProduct,
   updateProduct,
   deleteProduct,
-  getProductById
+  getProductById,
+  getIncredibleProducts
 };
