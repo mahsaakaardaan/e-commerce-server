@@ -34,8 +34,8 @@ const login = (req, res) => {
               httpOnly: true,
               secure: false,
               sameSite: 'lax',
-              path: '/'
-              // domain: process.env.COOKIE_DOMAIN || undefined
+              path: '/',
+              domain: process.env.COOKIE_DOMAIN
             })
             .status(200)
             .json({
@@ -61,8 +61,8 @@ const login = (req, res) => {
               httpOnly: true,
               secure: false,
               sameSite: 'lax',
-              path: '/'
-              // domain: process.env.COOKIE_DOMAIN || undefined,
+              path: '/',
+              domain: process.env.COOKIE_DOMAIN,
             })
             .status(200)
             .json({ data: data[0] });
@@ -83,8 +83,8 @@ const login = (req, res) => {
             httpOnly: true,
             secure: false,
             sameSite: 'lax',
-            path: '/'
-            // domain: process.env.COOKIE_DOMAIN || undefined,
+            path: '/',
+            domain: process.env.COOKIE_DOMAIN,
           })
           .status(200)
           .json({ data: data[0] });
