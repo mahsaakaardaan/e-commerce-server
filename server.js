@@ -9,7 +9,8 @@ const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:5173',
   'http://46.34.163.193:4500',
-  'http://localhost:4500'
+  'http://localhost:4500',
+  'http://admin.mahsaakaardaan.ir'
 ];
 app.use(
   cors({
@@ -33,7 +34,8 @@ app.use((req, res, next) => {
     'http://localhost:3000',
     'http://localhost:5173',
     'http://46.34.163.193:4500',
-    'http://localhost:4500/'
+    'http://localhost:4500/',
+    'http://admin.mahsaakaardaan.ir'
   ];
 
   const origin = req.headers.origin;
